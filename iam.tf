@@ -75,3 +75,25 @@ resource "aws_iam_user_policy_attachment" "GH-Code-Deploy-attach" {
   user       = "ghactions-app"
   policy_arn = aws_iam_policy.GH-Code-Deploy.arn
 }
+
+resource "aws_iam_role" "CodeDeployServiceRole" {
+  name = "CodeDeployServiceRole"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": [
+          "codedeploy.amazonaws.com"
+        ]
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
