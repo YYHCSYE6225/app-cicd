@@ -60,7 +60,7 @@ public class UserController {
     @GetMapping(value = "/self")
     public ResponseEntity<User> getUser(HttpServletRequest request){
         User user=userService.getUserSelf(request);
-        return new ResponseEntity(user,HttpStatus.OK);
+        return new ResponseEntity(user,HttpStatus.NO_CONTENT);
     }
 
     @PostMapping(value = "/self/pic")
