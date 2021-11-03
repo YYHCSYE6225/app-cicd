@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: source
+  - source: ./target/webapp-0.0.1-SNAPSHOT.jar
     destination: /home/ubuntu
 hooks:
   BeforeInstall:
