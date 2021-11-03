@@ -17,7 +17,7 @@ jobs:
         run: mvn --batch-mode --update-snapshots verify
 
       - name: Build Deployment Artifact
-        run: zip -r webapp target/webapp-0.0.1-SNAPSHOT.jar scripts/*.sh appspec.yml
+        run: zip -r webapp.zip target/webapp-0.0.1-SNAPSHOT.jar scripts/*.sh appspec.yml
 
       - name: Set up aws credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -27,7 +27,7 @@ jobs:
           aws-region: us-east-1 
 
       - name: Upload file to s3 bucket
-        run: aws s3 cp webapp s3://codedeploy.yyh.s3bucket/
+        run: aws s3 cp webapp.zip s3://codedeploy.yyh.s3bucket/
 
       - name: Call code deploy api
         run: aws deploy create-deployment --application-name csye6225-webapp --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name csye6225-webapp-deployment --description "csye6225 - CodeDeploy" --s3-location bucket=codedeploy.yyh.s3bucket,key=webapp-0.0.1-SNAPSHOT.jar,bundleType=zip
