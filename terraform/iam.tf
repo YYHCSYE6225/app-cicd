@@ -66,6 +66,28 @@ resource "aws_iam_policy" "GH-Code-Deploy" {
 EOT
 }
 
+resource "aws_iam_policy" "CodeDeploy-EC2-access" {
+  name        = "CodeDeploy-EC2-access"
+  description = "allows GitHub Actions to upload artifacts"
+
+  policy = <<EOT
+{
+   "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:*"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}
+EOT
+}
+
 resource "aws_iam_user_policy_attachment" "GH-Upload-To-S3-attach" {
   user       = "ghactions-app"
   policy_arn = aws_iam_policy.GH-Upload-To-S3.arn
@@ -74,6 +96,11 @@ resource "aws_iam_user_policy_attachment" "GH-Upload-To-S3-attach" {
 resource "aws_iam_user_policy_attachment" "GH-Code-Deploy-attach" {
   user       = "ghactions-app"
   policy_arn = aws_iam_policy.GH-Code-Deploy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "test-attach" {
+  role       = aws_iam_role.CodeDeployServiceRole.name
+  policy_arn = aws_iam_policy.CodeDeploy-EC2-access.arn
 }
 
 resource "aws_iam_role" "CodeDeployServiceRole" {
