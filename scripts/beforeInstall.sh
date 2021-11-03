@@ -1,2 +1,2 @@
-ps -ef | grep 8080 | grep -v grep | cut -c 9-15 | xargs kill -9
+kill -9 $(netstat -nlp | grep :8080 | awk '{print $7}' | awk -F"/" '{ print $1 }')
 sudo rm -rf /var/webapp
